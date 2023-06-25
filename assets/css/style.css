@@ -70,6 +70,18 @@ h6 {
 # Header
 --------------------------------------------------------------*/
 
+.skill {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.skill-line {
+  border: 0;
+  height: 2px;
+  width: 100%;
+}
+
 #particles-js {
   position: absolute;
   width: 100%;
