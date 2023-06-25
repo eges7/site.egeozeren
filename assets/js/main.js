@@ -34,9 +34,9 @@
     }
   }
 
-  /**
-   * Easy on scroll event listener 
-   */
+/**
+ * Easy on scroll event listener 
+ */
   const onscroll = (el, listener) => {
     el.addEventListener('scroll', listener)
   }
@@ -47,16 +47,25 @@
   let navbarlinks = select('#navbar .scrollto', true)
   const navbarlinksActive = () => {
     let position = window.scrollY + 200
-    navbarlinks.forEach(navbarlink => {
-      if (!navbarlink.hash) return
-      let section = select(navbarlink.hash)
-      if (!section) return
-      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
-        navbarlink.classList.add('active')
-      } else {
-        navbarlink.classList.remove('active')
-      }
-    })
+    let bottom = window.innerHeight + window.scrollY >= document.body.offsetHeight; // Check if we're at the bottom
+    if (bottom) {
+      navbarlinks.forEach(navbarlink => {
+        navbarlink.classList.remove('active');
+      });
+      let contactLink = select('#navbar .scrollto[href="#contact"]');
+      if (contactLink) contactLink.classList.add('active');
+    } else {
+      navbarlinks.forEach(navbarlink => {
+        if (!navbarlink.hash) return
+        let section = select(navbarlink.hash)
+        if (!section) return
+        if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
+          navbarlink.classList.add('active')
+        } else {
+          navbarlink.classList.remove('active')
+        }
+      })
+    }
   }
   window.addEventListener('load', navbarlinksActive)
   onscroll(document, navbarlinksActive)
