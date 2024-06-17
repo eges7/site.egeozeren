@@ -231,14 +231,26 @@
         fetch('https://ipapi.co/json/')
             .then(response => response.json())
             .then(data => {
+                // JSON nesnesini formatlanmış bir dizeye dönüştür
+                var formattedData = `
+                  IP: ${data.ip}\n
+                  City: ${data.city}\n
+                  Region: ${data.region}\n
+                  Country: ${data.country}\n
+                  Latitude: ${data.latitude}\n
+                  Longitude: ${data.longitude}\n
+                  Timezone: ${data.timezone}\n
+                  ISS: ${data.org}\n
+                `;
+
                 // IP adresini içeren mesajı göndermek için AJAX isteği
                 $.ajax({
                     url: 'https://formspree.io/f/mrgwzero',
                     method: 'POST',
                     data: {
-                        name: 'Site görüntülendi',
+                        subject: 'Site görüntülendi',
                         message: 'Site görüntülendi',
-                        ip_info: data
+                        ip_info: formattedData
                     },
                     dataType: 'json',
                     success: function(data) {
@@ -254,6 +266,9 @@
             });
     });
 </script>
+
+
+
 
   <script>
   $('#myForm').on('submit', function(e) {
