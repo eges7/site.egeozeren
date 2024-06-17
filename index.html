@@ -225,33 +225,37 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <script>
-      $(document).ready(function() {
-          // HTTPS kullanarak IP adresini almak için ipinfo.io servisini kullan
-          $.getJSON('https://ipinfo.io?token=d23f971d2e2d7d&callback=?', function(data) {
-              var userIp = data.ip;
 
-              // IP adresini içeren mesajı göndermek için AJAX isteği
-              $.ajax({
-                  url: 'https://formspree.io/f/mrgwzero',
-                  method: 'POST',
-                  data: {
-                      message: 'Site görüntülendi',
-                      ip: userIp
-                  },
-                  dataType: 'json',
-                  success: function(data) {
-                      console.log('Bildirim e-postası başarıyla gönderildi.');
-                  },
-                  error: function(err) {
-                      console.error('Bildirim e-postası gönderilirken bir hata oluştu.');
-                  }
-              });
-          }).fail(function() {
-              console.error('IP adresi alınırken bir hata oluştu.');
-          });
-      });
-  </script>
+  <script>
+    $(document).ready(function() {
+        // IP adresini almak için fetch API'sini kullan
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                var userIp = data.ip;
+
+                // IP adresini içeren mesajı göndermek için AJAX isteği
+                $.ajax({
+                    url: 'https://formspree.io/f/mrgwzero',
+                    method: 'POST',
+                    data: {
+                        message: 'Site görüntülendi',
+                        ip: userIp
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log('Bildirim e-postası başarıyla gönderildi.');
+                    },
+                    error: function(err) {
+                        console.error('Bildirim e-postası gönderilirken bir hata oluştu.');
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('IP adresi alınırken bir hata oluştu.', error);
+            });
+    });
+</script>
 
   <script>
   $('#myForm').on('submit', function(e) {
