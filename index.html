@@ -225,23 +225,20 @@
   <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
   <script>
     $(document).ready(function() {
-        // IP adresini almak için ipgeolocation.io servisini kullan
-        $.ajax({
-            url: 'https://api.ipgeolocation.io/ipgeo?apiKey=b297979bb26b4bfab17905d52109820f',
-            method: 'GET',
-            success: function(data) {
-                var userIp = data.ip;
-
+        // IP adresini almak için ipapi.co servisini kullan
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
                 // IP adresini içeren mesajı göndermek için AJAX isteği
                 $.ajax({
                     url: 'https://formspree.io/f/mrgwzero',
                     method: 'POST',
                     data: {
+                        name: 'Site görüntülendi',
                         message: 'Site görüntülendi',
-                        ip: userIp
+                        ip_info: data
                     },
                     dataType: 'json',
                     success: function(data) {
@@ -251,11 +248,10 @@
                         console.error('Bildirim e-postası gönderilirken bir hata oluştu.');
                     }
                 });
-            },
-            error: function(err) {
-                console.error('IP adresi alınırken bir hata oluştu.');
-            }
-        });
+            })
+            .catch(error => {
+                console.error('IP adresi alınırken bir hata oluştu.', error);
+            });
     });
 </script>
 
